@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -30,7 +29,7 @@
             width: 100%;
             background: #131a27;
             border-radius: 40px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 2px #2e3a4e inset;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 2px #2e3a4e inset;
             overflow: hidden;
             backdrop-filter: blur(2px);
             border: 1px solid #3d4b62;
@@ -75,8 +74,8 @@
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 30px #00000055;
-            background-image: radial-gradient(circle at 30% 40%, #2e3d57 1px, transparent 1px),
-                radial-gradient(circle at 70% 80%, #2e3d57 1px, transparent 1px);
+            background-image: radial-gradient(circle at 30% 40%, #2e3d57 1px, transparent 1px), 
+                              radial-gradient(circle at 70% 80%, #2e3d57 1px, transparent 1px);
             background-size: 40px 40px;
         }
 
@@ -109,7 +108,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 0 600px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 600px rgba(0,0,0,0.5);
             pointer-events: none;
             transition: border-color 0.2s;
         }
@@ -151,17 +150,9 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-6px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
         }
 
         .avatar-icon {
@@ -307,10 +298,7 @@
             border: 1px solid #5495ff;
         }
 
-        .primary-btn:active {
-            transform: scale(0.97);
-            background: #1d4ed8;
-        }
+        .primary-btn:active { transform: scale(0.97); background: #1d4ed8; }
 
         .secondary-btn {
             background: #334155;
@@ -359,25 +347,11 @@
             display: none !important;
         }
 
-        .flex {
-            display: flex;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .gap-2 {
-            gap: 8px;
-        }
-
-        .text-glow {
-            text-shadow: 0 0 6px #8cc6ff;
-        }
-
-        .mt-4 {
-            margin-top: 16px;
-        }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .gap-2 { gap: 8px; }
+        .text-glow { text-shadow: 0 0 6px #8cc6ff; }
+        .mt-4 { margin-top: 16px; }
 
         /* simulated marker scan pill */
         .med-pack {
@@ -396,7 +370,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="ar-device">
         <!-- simulated iOS status -->
@@ -408,20 +381,11 @@
             <span>🔴</span> AR MEDICAL <span>⚡</span>
         </div>
 
-        <!-- Settings Panel -->
-        <div style="padding: 0 16px;">
-            <input type="password" id="apiKeyInput" placeholder="Enter Gemini API Key..."
-                style="width: 100%; padding: 10px; border-radius: 8px; background: #1e293b; border: 1px solid #40536e; color: white; margin-top: 8px; font-size: 14px;">
-            <input type="text" id="medicationInput" placeholder="Medication Name (e.g., Lisinopril)" value="Metformin"
-                style="width: 100%; padding: 10px; border-radius: 8px; background: #1e293b; border: 1px solid #40536e; color: white; margin-top: 8px; font-size: 14px;">
-        </div>
-
         <!-- AR CORE VIEW (marker based) -->
         <div class="ar-view" id="arView">
             <!-- tracking status indicator -->
             <div class="tracking-indicator" id="trackingStatus">
-                <span id="trackingLed"
-                    style="width: 12px; height: 12px; background: #fb7185; border-radius: 20px;"></span>
+                <span id="trackingLed" style="width: 12px; height: 12px; background: #fb7185; border-radius: 20px;"></span>
                 <span id="trackingText">Scanning for package...</span>
             </div>
 
@@ -434,8 +398,7 @@
                 <div class="marker-placeholder" id="markerIcon">
                     💊📦
                 </div>
-                <div
-                    style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px; backdrop-filter: blur(4px);">
+                <div style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px; backdrop-filter: blur(4px);">
                     point camera at <strong>Metformin box</strong>
                 </div>
             </div>
@@ -444,14 +407,13 @@
         <!-- hidden simulation of package detection -->
         <div class="med-pack" id="simulateDetectionPanel">
             <span>📋 Metformin 500mg</span>
-            <button id="simulateScanBtn" class="secondary-btn" style="padding: 10px 16px; flex: 0;">📸 simulate
-                scan</button>
+            <button id="simulateScanBtn" class="secondary-btn" style="padding: 10px 16px; flex: 0;">📸 simulate scan</button>
         </div>
 
         <!-- LOGIC LOOP: Comprehension check + verification -->
         <div class="logic-panel">
             <div class="step-title"><span>🧪 VISUAL → LOGIC</span> <span class="pill">safety check</span></div>
-
+            
             <!-- question card -->
             <div class="comprehension-question" id="quizArea">
                 <div class="question-text">
@@ -490,13 +452,11 @@
     </div>
 
     <script>
-        (function () {
+        (function() {
             // ---------- STATE ----------
             let markerDetected = false;           // image recognition status
             let selectedOption = null;             // index 0,1,2
             let verified = false;                   // badge displayed
-            let isFetching = false;
-            let currentMedData = null;
             const assets = {
                 marker: '💊📦',
                 avatar: ` <div class="avatar-model">
@@ -520,80 +480,29 @@
             const safetyBadge = document.getElementById('safetyBadge');
             const pipelineStatus = document.getElementById('pipelineStatus');
             const simulateScanBtn = document.getElementById('simulateScanBtn');
-            const apiKeyInput = document.getElementById('apiKeyInput');
-            const medicationInput = document.getElementById('medicationInput');
-            const scannedMedName = document.querySelector('#simulateDetectionPanel span');
-
-            async function fetchGeminiData(medication) {
-                const apiKey = apiKeyInput.value.trim();
-                if (!apiKey) {
-                    alert('Please enter your Gemini API Key directly in the settings panel above first.');
-                    return null;
-                }
-
-                const promptText = `You are a medical assistant API. Provide training info about "${medication}". Respond ONLY with JSON, no markdown formatting.
-{
-  "avatar_label": "3D medical avatar emojis (e.g., 🧑‍⚕️🫀)",
-  "mechanism_of_action": "Mechanism of action summary with emojis (e.g., ⚛️🧬✨)",
-  "question": "A safety-critical comprehension question about ${medication}",
-  "options": ["A) Option 1 text", "B) Option 2 text", "C) Option 3 text"],
-  "correct_index": 0
-}`;
-
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: promptText }] }],
-                            generationConfig: { response_mime_type: "application/json" }
-                        })
-                    });
-
-                    if (!response.ok) throw new Error(`API Error: ${response.status}`);
-                    const data = await response.json();
-                    return JSON.parse(data.candidates[0].content.parts[0].text);
-                } catch (error) {
-                    console.error("Gemini API Error:", error);
-                    alert("Failed to fetch data from Gemini API. Check console for details.");
-                    return null;
-                }
-            }
 
             // Helper: update AR view based on markerDetected
             function updateARView() {
-                if (markerDetected && currentMedData) {
+                if (markerDetected) {
                     // stable tracking on
-                    trackingLed.style.background = '#4ade80'; // green
-                    trackingText.innerText = `Tracking ${medicationInput.value.trim()} box`;
-                    scanBox.style.border = '3px solid #4ade80';
-                    scanBox.style.boxShadow = '0 0 0 600px rgba(0,40,20,0.6)';
-
-                    // show 3D avatar + molecules (mechanism of action)
-                    arContent.innerHTML = ` <div class="avatar-model">
-                                <span class="avatar-icon">${currentMedData.avatar_label}</span>
-                                <span class="avatar-label">3D medical avatar</span>
-                                <span style="font-size:16px; text-align:center; padding: 0 10px;">⚕️ ${currentMedData.mechanism_of_action}</span>
-                           </div>`;
-                } else if (markerDetected && !currentMedData) {
-                    // Fallback to static
                     trackingLed.style.background = '#4ade80'; // green
                     trackingText.innerText = 'Tracking Metformin box';
                     scanBox.style.border = '3px solid #4ade80';
                     scanBox.style.boxShadow = '0 0 0 600px rgba(0,40,20,0.6)';
+                    
+                    // show 3D avatar + molecules (mechanism of action)
                     arContent.innerHTML = assets.avatar;
                 } else {
-                    const medName = medicationInput ? medicationInput.value.trim() : 'Metformin';
                     trackingLed.style.background = '#fb7185'; // red
                     trackingText.innerText = 'Scanning for package...';
                     scanBox.style.border = '3px dashed #72f0e6';
                     scanBox.style.boxShadow = '0 0 0 600px rgba(0,0,0,0.5)';
-
-                    // show placeholder prompt
+                    
+                    // show metformin placeholder prompt
                     arContent.innerHTML = ` 
                         <div class="marker-placeholder">💊📦</div>
-                        <div style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px; backdrop-filter: blur(4px); text-align: center;">
-                            point camera at <strong>${medName} box</strong>
+                        <div style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px;">
+                            point camera at <strong>Metformin box</strong>
                         </div>
                     `;
                 }
@@ -640,25 +549,26 @@
                 });
             });
 
-            // VERIFY button – core logic
+            // VERIFY button – core logic: if correct answer (kidney impairment = index 0) show badge
             verifyBtn.addEventListener('click', () => {
+                // only works if marker detected (simulates logic loop requirement)
                 if (!markerDetected) {
-                    alert('⚠️ First scan the package (click simulate scan)');
+                    alert('⚠️ First scan the Metformin package (click simulate scan)');
                     return;
                 }
                 if (selectedOption === null) {
                     alert('Please select an answer.');
                     return;
                 }
-
-                const isCorrect = currentMedData ? (selectedOption === currentMedData.correct_index) : (selectedOption === 0);
-
-                if (isCorrect) {
+                // correct answer is index 0 (kidney impairment)
+                if (selectedOption === 0) {
                     verified = true;
                     safetyBadge.classList.remove('hidden');
+                    // optionally freeze selection?
                     updateStatusText();
                 } else {
-                    alert('❌ Incorrect. Please review the safety guidelines and try again.');
+                    alert('❌ Incorrect. Metformin requires caution with kidney impairment.');
+                    // but we do NOT set verified = true; badge stays hidden
                 }
             });
 
@@ -671,55 +581,12 @@
                 updateStatusText();
             });
 
-            // SIMULATED SCAN: toggles marker detection and fetches API data
-            simulateScanBtn.addEventListener('click', async () => {
-                if (isFetching) return;
-                const medName = medicationInput.value.trim() || 'Metformin';
-                if (scannedMedName) scannedMedName.innerHTML = `📋 ${medName}`;
-
-                if (!markerDetected) {
-                    isFetching = true;
-                    simulateScanBtn.innerHTML = '⏳ Loading AI Data...';
-                    simulateScanBtn.disabled = true;
-
-                    const data = await fetchGeminiData(medName);
-
-                    isFetching = false;
-                    simulateScanBtn.disabled = false;
-
-                    if (data) {
-                        currentMedData = data;
-                        markerDetected = true;
-
-                        document.querySelector('.question-text').innerHTML = `⚕️ Before confirming, answer: <br><span style="font-weight: 700;">"${data.question}"</span>`;
-                        optionBtns.forEach((btn, idx) => {
-                            btn.innerHTML = `<span>${['🔵', '🟢', '🟠'][idx]}</span> ${data.options[idx] || ''}`;
-                        });
-
-                        selectedOption = null;
-                        verified = false;
-                        safetyBadge.classList.add('hidden');
-                        clearSelectedOptions();
-
-                        updateARView();
-                    } else {
-                        // Fallback
-                        markerDetected = true;
-                        updateARView();
-                    }
-                } else {
-                    markerDetected = false;
-                    currentMedData = null;
-
-                    // Reset to default quiz
-                    document.querySelector('.question-text').innerHTML = `⚕️ Before confirming, answer: <br><span style="font-weight: 700;">"Which condition requires caution with ${medName}?"</span>`;
-                    optionBtns[0].innerHTML = `<span>🔵</span> A) Kidney impairment`;
-                    optionBtns[1].innerHTML = `<span>🟢</span> B) Mild headache`;
-                    optionBtns[2].innerHTML = `<span>🟠</span> C) Seasonal allergies`;
-
-                    updateARView();
-                }
-                updateBtnLabel();
+            // SIMULATED SCAN: toggles marker detection (image recognition)
+            simulateScanBtn.addEventListener('click', () => {
+                markerDetected = !markerDetected;  // toggle for demo ease
+                updateARView();
+                // if marker turned off, we may also need to hide badge? the spec says "trigger avatar" but badge independent. keep badge logic.
+                // if marker lost, we can keep badge if already verified, that's fine.
             });
 
             // Bonus: simulate camera automatic detection on box? We also provide a manual toggle.
@@ -774,21 +641,34 @@
             // Edge: simulateScanBtn might turn off marker, but avatar disappears; we want to maintain badge if verified (realistic: badge persists? maybe yes.)
             // The logic loop is independent: badge stays as "Safety Verified" but 3D gone. That's ok for demo.
 
-            // Toggle label dynamically
+            // Toggle label
+            simulateScanBtn.addEventListener('click', function() {
+                if (markerDetected) {
+                    simulateScanBtn.innerHTML = '📸 scanning ON';
+                } else {
+                    simulateScanBtn.innerHTML = '📸 simulate scan (off)';
+                }
+            });
+            // initial label after possible toggle set
+            simulateScanBtn.innerHTML = '📸 simulate scan';
+
+            // also reflect marker state on scan btn text
             function updateBtnLabel() {
-                if (isFetching) {
-                    simulateScanBtn.innerHTML = '⏳ Loading AI Data...';
-                } else if (markerDetected) {
+                if (markerDetected) {
                     simulateScanBtn.innerHTML = '🟢 tracking ON (sim)';
                 } else {
                     simulateScanBtn.innerHTML = '🔴 simulate scan';
                 }
             }
+            // override original listener to also update label
+            const originalHandler = simulateScanBtn.click;
+            simulateScanBtn.addEventListener('click', function() {
+                setTimeout(updateBtnLabel, 10);
+            });
             updateBtnLabel();
 
             // everything placed, all features working.
         })();
     </script>
 </body>
-
 </html>
