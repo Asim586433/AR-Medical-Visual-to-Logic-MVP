@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -29,7 +30,7 @@
             width: 100%;
             background: #131a27;
             border-radius: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 2px #2e3a4e inset;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 2px #2e3a4e inset;
             overflow: hidden;
             backdrop-filter: blur(2px);
             border: 1px solid #3d4b62;
@@ -74,8 +75,8 @@
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 30px #00000055;
-            background-image: radial-gradient(circle at 30% 40%, #2e3d57 1px, transparent 1px), 
-                              radial-gradient(circle at 70% 80%, #2e3d57 1px, transparent 1px);
+            background-image: radial-gradient(circle at 30% 40%, #2e3d57 1px, transparent 1px),
+                radial-gradient(circle at 70% 80%, #2e3d57 1px, transparent 1px);
             background-size: 40px 40px;
         }
 
@@ -108,7 +109,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 0 600px rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 600px rgba(0, 0, 0, 0.5);
             pointer-events: none;
             transition: border-color 0.2s;
         }
@@ -150,9 +151,17 @@
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .avatar-icon {
@@ -298,7 +307,10 @@
             border: 1px solid #5495ff;
         }
 
-        .primary-btn:active { transform: scale(0.97); background: #1d4ed8; }
+        .primary-btn:active {
+            transform: scale(0.97);
+            background: #1d4ed8;
+        }
 
         .secondary-btn {
             background: #334155;
@@ -347,11 +359,25 @@
             display: none !important;
         }
 
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .gap-2 { gap: 8px; }
-        .text-glow { text-shadow: 0 0 6px #8cc6ff; }
-        .mt-4 { margin-top: 16px; }
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .gap-2 {
+            gap: 8px;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 6px #8cc6ff;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
 
         /* simulated marker scan pill */
         .med-pack {
@@ -368,8 +394,37 @@
             font-weight: 600;
             color: #d4edff;
         }
+
+        .api-key-input {
+            background: #0b101a;
+            border: 1px solid #2b3a50;
+            color: #94a8c5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            width: 90%;
+            margin: 0 auto 12px;
+            display: block;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .api-key-input:focus {
+            border-color: #48b5ff;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.6;
+        }
     </style>
 </head>
+
 <body>
     <div class="ar-device">
         <!-- simulated iOS status -->
@@ -383,9 +438,13 @@
 
         <!-- AR CORE VIEW (marker based) -->
         <div class="ar-view" id="arView">
+            <video id="webcamVideo" class="video-bg" autoplay playsinline muted></video>
+            <canvas id="captureCanvas" style="display: none;"></canvas>
+
             <!-- tracking status indicator -->
             <div class="tracking-indicator" id="trackingStatus">
-                <span id="trackingLed" style="width: 12px; height: 12px; background: #fb7185; border-radius: 20px;"></span>
+                <span id="trackingLed"
+                    style="width: 12px; height: 12px; background: #fb7185; border-radius: 20px;"></span>
                 <span id="trackingText">Scanning for package...</span>
             </div>
 
@@ -398,22 +457,25 @@
                 <div class="marker-placeholder" id="markerIcon">
                     💊📦
                 </div>
-                <div style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px; backdrop-filter: blur(4px);">
-                    point camera at <strong>Metformin box</strong>
+                <div
+                    style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px; backdrop-filter: blur(4px);">
+                    point camera at <strong>Medication box</strong>
                 </div>
             </div>
         </div>
 
         <!-- hidden simulation of package detection -->
         <div class="med-pack" id="simulateDetectionPanel">
-            <span>📋 Metformin 500mg</span>
-            <button id="simulateScanBtn" class="secondary-btn" style="padding: 10px 16px; flex: 0;">📸 simulate scan</button>
+            <span id="detectedMedName"
+                style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">📋 Awaiting Scan</span>
+            <button id="simulateScanBtn" class="secondary-btn"
+                style="padding: 10px 16px; flex: 0; white-space: nowrap;">📸 Capture & Analyze</button>
         </div>
 
         <!-- LOGIC LOOP: Comprehension check + verification -->
         <div class="logic-panel">
             <div class="step-title"><span>🧪 VISUAL → LOGIC</span> <span class="pill">safety check</span></div>
-            
+
             <!-- question card -->
             <div class="comprehension-question" id="quizArea">
                 <div class="question-text">
@@ -452,11 +514,13 @@
     </div>
 
     <script>
-        (function() {
+        (function () {
             // ---------- STATE ----------
-            let markerDetected = false;           // image recognition status
-            let selectedOption = null;             // index 0,1,2
-            let verified = false;                   // badge displayed
+            let markerDetected = false;
+            let selectedOption = null;
+            let verified = false;
+            let correctOptionIndex = 0; // Dynamic from API
+            let isLoading = false;
             const assets = {
                 marker: '💊📦',
                 avatar: ` <div class="avatar-model">
@@ -469,10 +533,11 @@
             };
 
             // DOM elements
+            const webcamVideo = document.getElementById('webcamVideo');
+            const captureCanvas = document.getElementById('captureCanvas');
             const trackingLed = document.getElementById('trackingLed');
             const trackingText = document.getElementById('trackingText');
             const arContent = document.getElementById('arContent');
-            const markerIcon = document.getElementById('markerIcon');
             const scanBox = document.getElementById('scanBox');
             const optionBtns = document.querySelectorAll('.option-btn');
             const verifyBtn = document.getElementById('verifyBtn');
@@ -480,57 +545,142 @@
             const safetyBadge = document.getElementById('safetyBadge');
             const pipelineStatus = document.getElementById('pipelineStatus');
             const simulateScanBtn = document.getElementById('simulateScanBtn');
+            const detectedMedName = document.getElementById('detectedMedName');
 
-            // Helper: update AR view based on markerDetected
+            // WebCam Setup
+            async function setupWebcam() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                    webcamVideo.srcObject = stream;
+                } catch (err) {
+                    console.error("Error accessing webcam: ", err);
+                    trackingText.innerText = "Camera access denied/failed";
+                }
+            }
+            setupWebcam();
+
+            // API Call logic
+            async function analyzeImage(base64Image) {
+                // WARNING: Never commit real API keys to frontend code in production.
+                // Replace this placeholder with a valid free Gemini API key.
+                const apiKey = 'YOUR_FREE_GEMINI_API_KEY_HERE';
+
+                if (!apiKey || apiKey === 'YOUR_FREE_GEMINI_API_KEY_HERE') {
+                    alert("Please replace the placeholder API key in the source code with a valid free Gemini API key.");
+                    return;
+                }
+
+                isLoading = true;
+                updateARView();
+                trackingText.innerText = "Analyzing with AI...";
+
+                try {
+                    const payload = {
+                        contents: [{
+                            parts: [
+                                { text: 'Analyze this image. Identify any medication box or pill bottle shown. Generate a JSON response strictly in this format: {"medicationName": "string", "question": "A safety, usage, or comprehension question about this medication", "options": ["Option A", "Option B", "Option C"], "correctAnswerIndex": number (0, 1, or 2)}. If no medication is clearly visible, return a default for a generic Vitamin C supplement.' },
+                                { inlineData: { mimeType: "image/jpeg", data: base64Image.split(',')[1] } }
+                            ]
+                        }],
+                        generationConfig: {
+                            responseMimeType: "application/json"
+                        }
+                    };
+
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    let responseText = data.candidates[0].content.parts[0].text;
+                    const result = JSON.parse(responseText);
+
+                    // Update UI with AI Results
+                    detectedMedName.innerHTML = `📋 ${result.medicationName || 'Unknown Medication'}`;
+                    document.querySelector('.question-text').innerHTML = `⚕️ Before confirming, answer: <br><span style="font-weight: 700;">"${result.question}"</span>`;
+                    optionBtns[0].innerHTML = `<span>🔵</span> A) ${result.options[0]}`;
+                    optionBtns[1].innerHTML = `<span>🟢</span> B) ${result.options[1]}`;
+                    optionBtns[2].innerHTML = `<span>🟠</span> C) ${result.options[2]}`;
+
+                    correctOptionIndex = result.correctAnswerIndex;
+                    markerDetected = true;
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to analyze image. Check console for details or verify your API key.");
+                    markerDetected = false;
+                } finally {
+                    isLoading = false;
+                    updateARView();
+                }
+            }
+
+            // Capture Frame
+            function captureFrame() {
+                if (isLoading) return;
+
+                captureCanvas.width = webcamVideo.videoWidth || 400;
+                captureCanvas.height = webcamVideo.videoHeight || 380;
+                const ctx = captureCanvas.getContext('2d');
+                ctx.drawImage(webcamVideo, 0, 0, captureCanvas.width, captureCanvas.height);
+                const base64Image = captureCanvas.toDataURL('image/jpeg', 0.8);
+
+                analyzeImage(base64Image);
+            }
+
             function updateARView() {
-                if (markerDetected) {
-                    // stable tracking on
+                if (isLoading) {
+                    trackingLed.style.background = '#facc15'; // yellow
+                    trackingText.innerText = 'AI Analysis in progress...';
+                    scanBox.style.border = '3px solid #facc15';
+                    arContent.innerHTML = `<div class="marker-placeholder" style="animation: pulse 1.5s infinite;">⏳</div>`;
+                } else if (markerDetected) {
                     trackingLed.style.background = '#4ade80'; // green
-                    trackingText.innerText = 'Tracking Metformin box';
+                    trackingText.innerText = 'Medication Identified';
                     scanBox.style.border = '3px solid #4ade80';
                     scanBox.style.boxShadow = '0 0 0 600px rgba(0,40,20,0.6)';
-                    
-                    // show 3D avatar + molecules (mechanism of action)
                     arContent.innerHTML = assets.avatar;
                 } else {
                     trackingLed.style.background = '#fb7185'; // red
                     trackingText.innerText = 'Scanning for package...';
                     scanBox.style.border = '3px dashed #72f0e6';
                     scanBox.style.boxShadow = '0 0 0 600px rgba(0,0,0,0.5)';
-                    
-                    // show metformin placeholder prompt
-                    arContent.innerHTML = ` 
+                    arContent.innerHTML = `
                         <div class="marker-placeholder">💊📦</div>
-                        <div style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px;">
-                            point camera at <strong>Metformin box</strong>
+                        <div style="font-size: 16px; margin-top: 12px; background: #00000060; padding: 6px 14px; border-radius: 30px; backdrop-filter: blur(4px);">
+                            point camera at <strong>Medication box</strong>
                         </div>
                     `;
+                    detectedMedName.innerHTML = `📋 Awaiting Scan`;
                 }
-                // sync badge visibility if needed (verified survives)
+
                 if (verified) {
                     safetyBadge.classList.remove('hidden');
                 } else {
                     safetyBadge.classList.add('hidden');
                 }
                 updateStatusText();
+                updateBtnLabel();
             }
 
-            // update the pipeline status line
             function updateStatusText() {
                 let trackState = markerDetected ? '✅ locked' : '❌ searching';
+                if (isLoading) trackState = '⏳ analyzing';
                 let logicState = verified ? '✔ verified' : (selectedOption !== null ? 'option selected' : 'no answer');
                 let avatarState = markerDetected ? '3D active' : 'standby';
                 pipelineStatus.innerText = `🔍 tracking: ${trackState} | ${avatarState} | logic: ${logicState}`;
             }
 
-            // remove selected style from all options
             function clearSelectedOptions() {
-                optionBtns.forEach(btn => {
-                    btn.classList.remove('selected');
-                });
+                optionBtns.forEach(btn => btn.classList.remove('selected'));
             }
 
-            // set selected option visually
             function selectOption(index) {
                 clearSelectedOptions();
                 if (index !== null && optionBtns[index]) {
@@ -538,137 +688,89 @@
                 }
             }
 
-            // event listeners for options
             optionBtns.forEach((btn, idx) => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (verified) return; // once verified, lock options (optional)
+                    if (verified || !markerDetected) return;
                     selectedOption = idx;
                     selectOption(idx);
                     updateStatusText();
                 });
             });
 
-            // VERIFY button – core logic: if correct answer (kidney impairment = index 0) show badge
             verifyBtn.addEventListener('click', () => {
-                // only works if marker detected (simulates logic loop requirement)
                 if (!markerDetected) {
-                    alert('⚠️ First scan the Metformin package (click simulate scan)');
+                    alert('⚠️ Please capture and analyze a medication first.');
                     return;
                 }
                 if (selectedOption === null) {
                     alert('Please select an answer.');
                     return;
                 }
-                // correct answer is index 0 (kidney impairment)
-                if (selectedOption === 0) {
+                if (selectedOption === correctOptionIndex) {
                     verified = true;
                     safetyBadge.classList.remove('hidden');
-                    // optionally freeze selection?
                     updateStatusText();
                 } else {
-                    alert('❌ Incorrect. Metformin requires caution with kidney impairment.');
-                    // but we do NOT set verified = true; badge stays hidden
+                    alert('❌ Incorrect answer. Please review the medication details.');
                 }
             });
 
-            // reset quiz (but keeps marker state)
             resetQuizBtn.addEventListener('click', () => {
                 selectedOption = null;
                 verified = false;
+                markerDetected = false;
                 safetyBadge.classList.add('hidden');
                 clearSelectedOptions();
-                updateStatusText();
+                updateARView();
             });
 
-            // SIMULATED SCAN: toggles marker detection (image recognition)
             simulateScanBtn.addEventListener('click', () => {
-                markerDetected = !markerDetected;  // toggle for demo ease
-                updateARView();
-                // if marker turned off, we may also need to hide badge? the spec says "trigger avatar" but badge independent. keep badge logic.
-                // if marker lost, we can keep badge if already verified, that's fine.
+                if (!markerDetected) {
+                    captureFrame();
+                } else {
+                    markerDetected = false;
+                    updateARView();
+                }
             });
 
-            // Bonus: simulate camera automatic detection on box? We also provide a manual toggle.
-            // But also we can double-check: if marker detected and no badge yet, just fine.
+            function updateBtnLabel() {
+                if (isLoading) {
+                    simulateScanBtn.innerHTML = '⏳ Analyzing...';
+                } else if (markerDetected) {
+                    simulateScanBtn.innerHTML = '🔴 Clear Scan';
+                } else {
+                    simulateScanBtn.innerHTML = '📸 Capture & Analyze';
+                }
+            }
 
-            // Extra: clicking on scan box area can simulate scan (user friendly)
             scanBox.addEventListener('dblclick', () => {
-                markerDetected = true;
-                updateARView();
+                if (!markerDetected) {
+                    captureFrame();
+                }
             });
 
-            // initial update
-            updateARView();
-
-            // Ensure that badge remains if verified and marker toggled (design choice)
-            // also we need to ensure that if marker off but verified, badge still shows (we call updateARView)
-            // That's fine because updateARView does not clear badge.
-
-            // Full user journey demonstration instructions (visible on screen)
-            // The buttons simulate everything
-
-            // Additional: if marker becomes false and user tries verify, we alert already.
-            // Perfect.
-
-            // Also set initial status text
-            updateStatusText();
-
-            // test all interactive elements – also image placement (all images represented with unicode/emojis, no missing)
-            // all buttons functional
-
-            // provide small easter egg: when verified + marker on -> we show badge, the ar content also already shows avatar, so perfect.
-
-            // final: add "comprehension check" after avatar, the pipeline works.
-            // Hide marker icon if needed? Already updated via ARContent.
-
-            // Also we want the 60 second recording ready: the page shows full journey: scan (simulate), avatar, animation (molecules), quiz, verified badge.
-            // And no missing images: all glyphs visible.
-
-            // Add a small helper: double click on avatar simulates animation
             arContent.addEventListener('dblclick', () => {
                 if (markerDetected) {
                     alert('⚡ Mechanism of action animation: molecules interacting (simulated)');
                 }
             });
 
-            // Make sure verify also works after correct answer
-            // If badge shown, we can also allow re-hide via reset. Good.
+            updateARView();
 
-            // Optionally, if verified and reset, badge disappears, correct.
-            // All buttons tested.
-
-            // Edge: simulateScanBtn might turn off marker, but avatar disappears; we want to maintain badge if verified (realistic: badge persists? maybe yes.)
-            // The logic loop is independent: badge stays as "Safety Verified" but 3D gone. That's ok for demo.
-
-            // Toggle label
-            simulateScanBtn.addEventListener('click', function() {
-                if (markerDetected) {
-                    simulateScanBtn.innerHTML = '📸 scanning ON';
-                } else {
-                    simulateScanBtn.innerHTML = '📸 simulate scan (off)';
+            // Allow CSS pulse animation
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes pulse {
+                    0% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.5; transform: scale(0.95); }
+                    100% { opacity: 1; transform: scale(1); }
                 }
-            });
-            // initial label after possible toggle set
-            simulateScanBtn.innerHTML = '📸 simulate scan';
+            `;
+            document.head.appendChild(style);
 
-            // also reflect marker state on scan btn text
-            function updateBtnLabel() {
-                if (markerDetected) {
-                    simulateScanBtn.innerHTML = '🟢 tracking ON (sim)';
-                } else {
-                    simulateScanBtn.innerHTML = '🔴 simulate scan';
-                }
-            }
-            // override original listener to also update label
-            const originalHandler = simulateScanBtn.click;
-            simulateScanBtn.addEventListener('click', function() {
-                setTimeout(updateBtnLabel, 10);
-            });
-            updateBtnLabel();
-
-            // everything placed, all features working.
         })();
     </script>
 </body>
+
 </html>
